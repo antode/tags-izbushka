@@ -1,1 +1,3 @@
-# tags-izbushka
+# Избушка тегов
+
+![](/readme/tags-izbushka.gif)
