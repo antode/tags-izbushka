@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import * as StorePersistance from "@/stores/source/StorePersistance";
+import * as StorePersistance from "@/stores/source/SourceStorePersistance";
 import * as Repository from "@/model/text/TextRepository";
 
 import type { Word } from "@/model/text/type/Word";

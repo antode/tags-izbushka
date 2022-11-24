@@ -1,5 +1,5 @@
 import type { Text } from "@/model/text/type/Text";
-import { parseText } from "@/service/TextParser";
+import { parseText } from "@/model/text/TextParser";
 
 import { text_s as text_s_raw } from "@/resource/text_s";
 import { text_b1 as text_b1_raw } from "@/resource/text_b1";
