@@ -16,8 +16,6 @@ defineEmits(["citationDelete"]);
     @click.ctrl.alt="$emit('citationDelete', index)"
   >
     <span>{{ citationText }}</span>
-    <span>&nbsp;</span>
-    <!-- <span>{{ citation.pagesInfo }}</span> -->
   </div>
 </template>
 

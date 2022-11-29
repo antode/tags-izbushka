@@ -10,17 +10,14 @@ import SourceTextProcessingView from "@/views/SourceTextProcessingView.vue";
 import TextSelection from "@/components/TextSelection.vue";
 import VPagination from "@hennge/vue3-pagination";
 
-const wrapper = mount(SourceTextProcessingView, {
-  global: {
-    plugins: [createPinia()],
-  },
-});
-
-const VPagintaionWrapper = wrapper.findComponent(VPagination);
-
-console.log();
-
 describe("TextSelection", () => {
+  const wrapper = mount(SourceTextProcessingView, {
+    global: {
+      plugins: [createPinia()],
+    },
+  });
+  const VPaginationWrapper = wrapper.findComponent(VPagination);
+
   it("renders text", () => {
     const repoWords: Word[] = Repository.texts[0].words.filter(
       (w: Word) => w.page.id === 0
@@ -39,7 +36,7 @@ describe("TextSelection", () => {
       (w: Word) => w.page.id === 1
     );
 
-    const page2Button = VPagintaionWrapper.findAll("button.Page").find(
+    const page2Button = VPaginationWrapper.findAll("button.Page").find(
       (b) => b.text() === "2"
     );
 

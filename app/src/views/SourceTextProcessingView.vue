@@ -26,7 +26,7 @@ document.addEventListener("keyup", function (evt) {
 <template>
   <div class="container">
     <div class="main-panel-row">
-      <div class="main-panel-column">
+      <article class="main-panel-column" aria-label="текст">
         <TextSelection
           :words="sourceStore.currentPageWords"
           :selection-start="sourceStore.currentSource.selection.start"
@@ -34,13 +34,13 @@ document.addEventListener("keyup", function (evt) {
           @selection-start-change="sourceStore.setSelectionStart"
           @selection-end-change="sourceStore.setSelectionEnd"
         />
-      </div>
-      <div class="main-panel-column">
+      </article>
+      <article class="main-panel-column" aria-label="цитаты">
         <TaggedCitationList
           :citations-texts="sourceStore.citationsTexts"
           @citationDelete="sourceStore.deleteCitation"
         />
-      </div>
+      </article>
     </div>
 
     <div class="bottom-panel-row">
