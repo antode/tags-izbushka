@@ -1,12 +1,12 @@
 import type { Text } from "@/model/text/type/Text";
 import { parseText } from "@/model/text/TextParser";
 
-import { text_s as text_s_raw } from "@/resource/text_s";
-import { text_b1 as text_b1_raw } from "@/resource/text_b1";
-import { text_b2 as text_b2_raw } from "@/resource/text_b2";
-import { text_p1 as text_p1_raw } from "@/resource/text_p1";
-import { text_p2 as text_p2_raw } from "@/resource/text_p2";
-import { text_p3 as text_p3_raw } from "@/resource/text_p3";
+import { text_s as text_s_raw } from "@/model/text/resource/text_s";
+import { text_b1 as text_b1_raw } from "@/model/text/resource/text_b1";
+import { text_b2 as text_b2_raw } from "@/model/text/resource/text_b2";
+import { text_p1 as text_p1_raw } from "@/model/text/resource/text_p1";
+import { text_p2 as text_p2_raw } from "@/model/text/resource/text_p2";
+import { text_p3 as text_p3_raw } from "@/model/text/resource/text_p3";
 
 import type { Tag } from "./type/Tag";
 
