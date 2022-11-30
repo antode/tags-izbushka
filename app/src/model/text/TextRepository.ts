@@ -16,7 +16,7 @@ const b1PageDelimiter = /\/с\.\s\d+/;
 const parsedTextS = parseText(text_s_raw, genericPageDelimiter);
 const text_s: Text = {
   id: 0,
-  shortName: "s",
+  shortName: "С",
   fullName: "Спафарий",
   words: parsedTextS.words,
   pages: parsedTextS.pages,
@@ -25,7 +25,7 @@ const text_s: Text = {
 const parsedTextB1 = parseText(text_b1_raw, b1PageDelimiter);
 const text_b1: Text = {
   id: 1,
-  shortName: "b1",
+  shortName: "Б1",
   fullName: "Байков 1",
   words: parsedTextB1.words,
   pages: parsedTextB1.pages,
@@ -34,7 +34,7 @@ const text_b1: Text = {
 const parsedTextB2 = parseText(text_b2_raw, genericPageDelimiter);
 const text_b2: Text = {
   id: 2,
-  shortName: "b2",
+  shortName: "Б2",
   fullName: "Байков 2",
   words: parsedTextB2.words,
   pages: parsedTextB2.pages,
@@ -43,7 +43,7 @@ const text_b2: Text = {
 const parsedTextP1 = parseText(text_p1_raw, genericPageDelimiter);
 const text_p1: Text = {
   id: 3,
-  shortName: "p1",
+  shortName: "П1",
   fullName: "Петлин 1",
   words: parsedTextP1.words,
   pages: parsedTextP1.pages,
@@ -52,7 +52,7 @@ const text_p1: Text = {
 const parsedTextP2 = parseText(text_p2_raw, genericPageDelimiter);
 const text_p2: Text = {
   id: 4,
-  shortName: "p2",
+  shortName: "П2",
   fullName: "Петлин 2",
   words: parsedTextP2.words,
   pages: parsedTextP2.pages,
@@ -61,7 +61,7 @@ const text_p2: Text = {
 const parsedTextP3 = parseText(text_p3_raw, genericPageDelimiter);
 const text_p3: Text = {
   id: 5,
-  shortName: "p3",
+  shortName: "П3",
   fullName: "Петлин 3",
   words: parsedTextP3.words,
   pages: parsedTextP3.pages,

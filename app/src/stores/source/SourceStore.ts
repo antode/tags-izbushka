@@ -124,13 +124,47 @@ export const useSourceStore = defineStore("SourceStore", () => {
   const citationsTexts: ComputedRef<string[]> = computed(() => {
     const text: Text = textsData[currentSource.value.text_id];
 
-    const citationToText = (citation: Citation): string =>
-      text.words
+    const citationToText = (citation: Citation): string => {
+      let citationText: string = text.words
         .slice(citation.start.id, citation.end.id + 1)
         .reduce(
           (previousValue: string, word: Word) => previousValue + word.value,
           ""
         );
+
+      let firstPageText: string = citation.start.page.value
+        .replace(/\//g, "")
+        .replace(/\s+/g, "");
+
+      const firstPageParts = firstPageText.match(
+        /(?<leadLetter>[а-я])(?<rest>.+)/i
+      )?.groups;
+
+      if (firstPageParts === undefined) {
+        throw new Error("Unexpected start page value.");
+      }
+
+      firstPageText =
+        firstPageParts.leadLetter.toUpperCase() + firstPageParts.rest;
+
+      let lastPageText = "";
+      if (citation.start.page !== citation.end.page) {
+        lastPageText = citation.end.page.value
+          .replace(/\//g, "")
+          .replace(/\s+/g, "");
+
+        const lastPageParts = lastPageText.match(/[а-я]\.(?<rest>.+)/i)?.groups;
+        if (lastPageParts === undefined) {
+          throw new Error("Unexpected end page value.");
+        }
+
+        lastPageText = `-${lastPageParts.rest}`;
+      }
+
+      citationText += ` (${text.shortName}:${firstPageText}${lastPageText})`;
+
+      return citationText;
+    };
 
     return currentSource.value.citations
       .filter((c: Citation) => c.tag === currentSource.value.tag)

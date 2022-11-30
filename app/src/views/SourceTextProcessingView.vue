@@ -26,7 +26,7 @@ document.addEventListener("keyup", function (evt) {
 <template>
   <div class="container">
     <div class="main-panel-row">
-      <article class="main-panel-column" aria-label="текст">
+      <article aria-label="Текст" class="main-panel-column">
         <TextSelection
           :words="sourceStore.currentPageWords"
           :selection-start="sourceStore.currentSource.selection.start"
@@ -35,7 +35,7 @@ document.addEventListener("keyup", function (evt) {
           @selection-end-change="sourceStore.setSelectionEnd"
         />
       </article>
-      <article class="main-panel-column" aria-label="цитаты">
+      <article aria-label="Цитаты" class="main-panel-column">
         <TaggedCitationList
           :citations-texts="sourceStore.citationsTexts"
           @citationDelete="sourceStore.deleteCitation"
@@ -44,7 +44,10 @@ document.addEventListener("keyup", function (evt) {
     </div>
 
     <div class="bottom-panel-row">
-      <div class="bottom-panel-pagination-column">
+      <nav
+        aria-label="Нумерация страниц"
+        class="bottom-panel-pagination-column"
+      >
         <VPagination
           v-model="sourceStore.currentSource.pageNumber"
           :pages="sourceStore.pages"
@@ -52,16 +55,24 @@ document.addEventListener("keyup", function (evt) {
           :hideLastButton="true"
           @update:modelValue="sourceStore.changePage"
         />
-      </div>
+      </nav>
       <div class="bottom-panel-select-column">
-        <select class="app-select" v-model="sourceStore.currentSource.tag">
+        <select
+          aria-label="Тег"
+          class="app-select"
+          v-model="sourceStore.currentSource.tag"
+        >
           <option v-for="tag in sourceStore.tags" :key="tag.id" :value="tag">
             {{ tag.value }}
           </option>
         </select>
       </div>
       <div class="bottom-panel-select-column">
-        <select class="app-select" v-model="sourceStore.currentSourceId">
+        <select
+          aria-label="Источник"
+          class="app-select"
+          v-model="sourceStore.currentSourceId"
+        >
           <option
             v-for="source in sourceStore.sources"
             :key="source.id"
