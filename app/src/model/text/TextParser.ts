@@ -59,3 +59,36 @@ export function parseText(
 
   return { pages, words };
 }
+
+export function formatPages(
+  startPage: string,
+  endPage: string,
+  textShortName: string
+) {
+  let startPageFormatted = startPage.replace(/\//g, "").replace(/\s+/g, "");
+
+  const startPageParts = startPageFormatted.match(
+    /(?<leadLetter>[а-я])(?<rest>.+)/i
+  )?.groups;
+
+  if (startPageParts === undefined) {
+    throw new Error("Unexpected start page value.");
+  }
+
+  startPageFormatted =
+    startPageParts.leadLetter.toUpperCase() + startPageParts.rest;
+
+  let endPageFormatted = "";
+  if (startPage !== endPage) {
+    endPageFormatted = endPage.replace(/\//g, "").replace(/\s+/g, "");
+
+    const endPageParts = endPageFormatted.match(/[а-я]\.(?<rest>.+)/i)?.groups;
+    if (endPageParts === undefined) {
+      throw new Error("Unexpected end page value.");
+    }
+
+    endPageFormatted = `-${endPageParts.rest}`;
+  }
+
+  return ` (${textShortName}:${startPageFormatted}${endPageFormatted})`;
+}

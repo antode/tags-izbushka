@@ -38,15 +38,14 @@ export function getSources(texts: Text[], defaultTag: Tag): Source[] {
   }
 }
 
-export function getCurrentSourceId(sources: Source[]): number {
-  const currentSourceId: string | null =
-    localStorage.getItem("currentSourceId");
+export function getCurrentSourceId(): number {
+  const currentSource: string | null = localStorage.getItem("currentSourceId");
 
-  if (currentSourceId === null) {
-    return sources[0].id;
+  if (currentSource === null) {
+    return 0;
   }
 
-  return JSON.parse(currentSourceId);
+  return JSON.parse(currentSource);
 }
 
 export function updateSources(sources: Source[]): void {
@@ -57,9 +56,9 @@ export function updateSources(sources: Source[]): void {
   }
 }
 
-export function updateCurrentSourceId(sourceId: number): void {
+export function updateCurrentSourceId(id: number): void {
   try {
-    localStorage.setItem("currentSourceId", JSON.stringify(sourceId));
+    localStorage.setItem("currentSourceId", JSON.stringify(id));
   } catch (error) {
     console.log(error);
   }

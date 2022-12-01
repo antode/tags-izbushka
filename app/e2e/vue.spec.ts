@@ -171,4 +171,9 @@ test("Сохранение состояния источника.", async ({ pag
   await expect(page).toHaveScreenshot(
     "14 Текущее состояние первого источника.png"
   );
+
+  await page.reload();
+  await expect(page).toHaveScreenshot(
+    "14 Текущее состояние первого источника.png"
+  );
 });

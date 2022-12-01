@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { computed, reactive, watch, type ComputedRef } from "vue";
 
 import * as StorePersistance from "@/stores/source/SourceStorePersistance";
 import * as Repository from "@/model/text/TextRepository";
@@ -7,184 +8,133 @@ import type { Word } from "@/model/text/type/Word";
 import type { Citation } from "@/stores/source/type/Citation";
 import type { Source } from "@/stores/source/type/Source";
 import type { Text } from "@/model/text/type/Text";
-import { computed, ref, watch, type ComputedRef, type Ref } from "vue";
 import type { Tag } from "@/model/text/type/Tag";
-
-export interface SourceState {
-  currentSourceId: number;
-  sources: Source[];
-  tags: Tag[];
-}
+import { formatPages } from "@/model/text/TextParser";
 
 export const useSourceStore = defineStore("SourceStore", () => {
   const textsData: Text[] = Repository.texts;
-  const tagsData: Tag[] = Repository.tags;
+  const tags: Tag[] = Repository.tags;
 
   const sourcesInitial: Source[] = StorePersistance.getSources(
     textsData,
-    tagsData[0]
+    tags[0]
   );
-  const currentSourceInitialId: number =
-    StorePersistance.getCurrentSourceId(sourcesInitial);
 
-  const sources = ref(sourcesInitial);
-  const currentSourceId: Ref<number> = ref(currentSourceInitialId);
-  const currentSource = computed(() => {
-    return sources.value[currentSourceId.value];
+  const currentSourceInitialId: number = StorePersistance.getCurrentSourceId();
+
+  const state = reactive({
+    sources: sourcesInitial,
+    currentSource: sourcesInitial[currentSourceInitialId],
   });
-  const tags = ref(tagsData);
 
   watch(
-    sources,
-    (changedSources: Source[]) =>
-      StorePersistance.updateSources(changedSources),
+    state,
+    (newState) => {
+      StorePersistance.updateSources(newState.sources);
+      StorePersistance.updateCurrentSourceId(newState.currentSource.id);
+    },
     {
       deep: true,
     }
   );
 
-  watch(currentSourceId, (changedId: number) =>
-    StorePersistance.updateCurrentSourceId(changedId)
-  );
-
-  function changeTag(id: number): void {
-    if (id === currentSource.value.tag.id) {
-      return;
-    }
-
-    currentSource.value.tag = tags.value[id];
-  }
-
-  function changePage(pageNumber: number) {
-    currentSource.value.pageNumber = pageNumber;
-  }
-
   function clearSelection(): void {
-    currentSource.value.selection.start = null;
-    currentSource.value.selection.end = null;
+    state.currentSource.selection.start = null;
+    state.currentSource.selection.end = null;
   }
 
   function setSelectionStart(word: Word): void {
     if (
-      currentSource.value.selection.end !== null &&
-      word.id > currentSource.value.selection.end.id
+      state.currentSource.selection.end !== null &&
+      word.id > state.currentSource.selection.end.id
     ) {
       alert("Начало не должно быть после конца.");
       return;
     }
 
-    currentSource.value.selection.start = word;
+    state.currentSource.selection.start = word;
   }
 
   function setSelectionEnd(word: Word): void {
-    if (currentSource.value.selection.start === null) {
+    if (state.currentSource.selection.start === null) {
       alert("Сначала установите начало.");
       return;
     }
 
-    if (word.id < currentSource.value.selection.start.id) {
+    if (word.id < state.currentSource.selection.start.id) {
       alert("Конец не должен быть раньше начала.");
       return;
     }
 
-    currentSource.value.selection.end = word;
+    state.currentSource.selection.end = word;
   }
 
   function addCitation(): void {
-    if (currentSource.value.selection.start === null) {
+    if (state.currentSource.selection.start === null) {
       alert("Не установлено начало.");
       return;
     }
 
-    if (currentSource.value.selection.end === null) {
+    if (state.currentSource.selection.end === null) {
       alert("Не установлен конец.");
       return;
     }
 
-    currentSource.value.citations.push({
-      id: currentSource.value.citations.length,
-      start: currentSource.value.selection.start,
-      end: currentSource.value.selection.end,
-      tag: currentSource.value.tag,
+    state.currentSource.citations.push({
+      id: state.currentSource.citations.length,
+      start: state.currentSource.selection.start,
+      end: state.currentSource.selection.end,
+      tag: state.currentSource.tag,
     });
   }
 
   function deleteCitation(citationIndex: number): void {
-    currentSource.value.citations.splice(citationIndex, 1);
+    state.currentSource.citations.splice(citationIndex, 1);
   }
 
   const currentPageWords: ComputedRef<Word[]> = computed(() => {
-    const text: Text = textsData[currentSource.value.text_id];
+    const text: Text = textsData[state.currentSource.text_id];
     return text.words.filter(
       (word: Word) =>
-        word.page === text.pages[currentSource.value.pageNumber - 1]
+        word.page === text.pages[state.currentSource.pageNumber - 1]
     );
   });
 
   const citationsTexts: ComputedRef<string[]> = computed(() => {
-    const text: Text = textsData[currentSource.value.text_id];
+    const citations = state.currentSource.citations.filter(
+      (c: Citation) => c.tag.id === state.currentSource.tag.id
+    );
 
-    const citationToText = (citation: Citation): string => {
-      let citationText: string = text.words
+    const text: Text = textsData[state.currentSource.text_id];
+    const citationTexts = [];
+    for (const citation of citations) {
+      const citationText: string = text.words
         .slice(citation.start.id, citation.end.id + 1)
         .reduce(
           (previousValue: string, word: Word) => previousValue + word.value,
           ""
         );
 
-      let firstPageText: string = citation.start.page.value
-        .replace(/\//g, "")
-        .replace(/\s+/g, "");
+      const citationPagesFormatted: string = formatPages(
+        citation.start.page.value,
+        citation.end.page.value,
+        text.shortName
+      );
 
-      const firstPageParts = firstPageText.match(
-        /(?<leadLetter>[а-я])(?<rest>.+)/i
-      )?.groups;
+      citationTexts.push(citationText + citationPagesFormatted);
+    }
 
-      if (firstPageParts === undefined) {
-        throw new Error("Unexpected start page value.");
-      }
-
-      firstPageText =
-        firstPageParts.leadLetter.toUpperCase() + firstPageParts.rest;
-
-      let lastPageText = "";
-      if (citation.start.page !== citation.end.page) {
-        lastPageText = citation.end.page.value
-          .replace(/\//g, "")
-          .replace(/\s+/g, "");
-
-        const lastPageParts = lastPageText.match(/[а-я]\.(?<rest>.+)/i)?.groups;
-        if (lastPageParts === undefined) {
-          throw new Error("Unexpected end page value.");
-        }
-
-        lastPageText = `-${lastPageParts.rest}`;
-      }
-
-      citationText += ` (${text.shortName}:${firstPageText}${lastPageText})`;
-
-      return citationText;
-    };
-
-    return currentSource.value.citations
-      .filter((c: Citation) => c.tag === currentSource.value.tag)
-      .map(citationToText);
+    return citationTexts;
   });
 
   const pages: ComputedRef<number> = computed(() => {
-    const text: Text = textsData[currentSource.value.text_id];
-
-    return text.pages.length;
+    return textsData[state.currentSource.text_id].pages.length;
   });
 
   const sourceFullName = (s: Source): string => textsData[s.text_id].fullName;
 
   return {
-    currentSourceId,
-    sources,
     tags,
-    changeTag,
-    changePage,
     clearSelection,
     setSelectionStart,
     setSelectionEnd,
@@ -194,6 +144,6 @@ export const useSourceStore = defineStore("SourceStore", () => {
     citationsTexts,
     sourceFullName,
     pages,
-    currentSource,
+    state,
   };
 });

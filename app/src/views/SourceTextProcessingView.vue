@@ -29,8 +29,8 @@ document.addEventListener("keyup", function (evt) {
       <article aria-label="Текст" class="main-panel-column">
         <TextSelection
           :words="sourceStore.currentPageWords"
-          :selection-start="sourceStore.currentSource.selection.start"
-          :selection-end="sourceStore.currentSource.selection.end"
+          :selection-start="sourceStore.state.currentSource.selection.start"
+          :selection-end="sourceStore.state.currentSource.selection.end"
           @selection-start-change="sourceStore.setSelectionStart"
           @selection-end-change="sourceStore.setSelectionEnd"
         />
@@ -49,18 +49,17 @@ document.addEventListener("keyup", function (evt) {
         class="bottom-panel-pagination-column"
       >
         <VPagination
-          v-model="sourceStore.currentSource.pageNumber"
+          v-model="sourceStore.state.currentSource.pageNumber"
           :pages="sourceStore.pages"
           :hideFirstButton="true"
           :hideLastButton="true"
-          @update:modelValue="sourceStore.changePage"
         />
       </nav>
       <div class="bottom-panel-select-column">
         <select
           aria-label="Тег"
           class="app-select"
-          v-model="sourceStore.currentSource.tag"
+          v-model="sourceStore.state.currentSource.tag"
         >
           <option v-for="tag in sourceStore.tags" :key="tag.id" :value="tag">
             {{ tag.value }}
@@ -71,12 +70,12 @@ document.addEventListener("keyup", function (evt) {
         <select
           aria-label="Источник"
           class="app-select"
-          v-model="sourceStore.currentSourceId"
+          v-model="sourceStore.state.currentSource"
         >
           <option
-            v-for="source in sourceStore.sources"
+            v-for="source in sourceStore.state.sources"
             :key="source.id"
-            :value="source.id"
+            :value="source"
           >
             {{ sourceStore.sourceFullName(source) }}
           </option>
