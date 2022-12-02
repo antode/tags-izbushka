@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ICitation } from "@/stores/source/type/Citation";
+import type { ICitation } from "@/stores/source/Citation";
 
 export interface Props {
   citations: ICitation[];

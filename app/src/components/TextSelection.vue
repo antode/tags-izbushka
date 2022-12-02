@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Word } from "@/model/text/type/Word";
-import type { ISelection } from "@/stores/source/type/Selection";
+import type { ISelection } from "@/stores/source/Selection";
 
 export interface Props {
   words: Word[];
