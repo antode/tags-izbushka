@@ -6,21 +6,30 @@ import TextSelection from "@/components/TextSelection.vue";
 import TaggedCitationList from "@/components/CitationList.vue";
 
 import { useSourceStore } from "@/stores/source/SourceStore";
+import { storeToRefs } from "pinia";
+import * as Selection from "@/stores/source/type/Selection";
 
 const sourceStore = useSourceStore();
+const { sources } = storeToRefs(sourceStore);
 
 document.addEventListener("keyup", function (evt) {
   if (evt.ctrlKey && evt.key === "Enter") {
     sourceStore.addCitation();
-    sourceStore.clearSelection();
+    Selection.clear(sources.value.current.selection);
   }
 });
 
 document.addEventListener("keyup", function (evt) {
   if (evt.key === "Escape") {
-    sourceStore.clearSelection();
+    // sources.value.current.selection.clear();
+    Selection.clear(sources.value.current.selection);
   }
 });
+
+const setStart = (w, z) => {
+  console.log(w, z);
+  Selection.setStart(sources.value.current.selection, w);
+};
 </script>
 
 <template>
@@ -29,10 +38,9 @@ document.addEventListener("keyup", function (evt) {
       <article aria-label="Текст" class="main-panel-column">
         <TextSelection
           :words="sourceStore.currentPageWords"
-          :selection-start="sourceStore.state.currentSource.selection.start"
-          :selection-end="sourceStore.state.currentSource.selection.end"
-          @selection-start-change="sourceStore.setSelectionStart"
-          @selection-end-change="sourceStore.setSelectionEnd"
+          :selection="sources.current.selection"
+          @selection-start-change="setStart"
+          @selection-end-change="sources.current.selection.setEnd"
         />
       </article>
       <article aria-label="Цитаты" class="main-panel-column">
@@ -49,7 +57,7 @@ document.addEventListener("keyup", function (evt) {
         class="bottom-panel-pagination-column"
       >
         <VPagination
-          v-model="sourceStore.state.currentSource.pageNumber"
+          v-model="sources.current.pageNumber"
           :pages="sourceStore.pages"
           :hideFirstButton="true"
           :hideLastButton="true"
@@ -59,7 +67,7 @@ document.addEventListener("keyup", function (evt) {
         <select
           aria-label="Тег"
           class="app-select"
-          v-model="sourceStore.state.currentSource.tag"
+          v-model="sources.current.tag"
         >
           <option v-for="tag in sourceStore.tags" :key="tag.id" :value="tag">
             {{ tag.value }}
@@ -70,10 +78,10 @@ document.addEventListener("keyup", function (evt) {
         <select
           aria-label="Источник"
           class="app-select"
-          v-model="sourceStore.state.currentSource"
+          v-model="sources.current"
         >
           <option
-            v-for="source in sourceStore.state.sources"
+            v-for="source in sources.all"
             :key="source.id"
             :value="source"
           >

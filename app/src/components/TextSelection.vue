@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Word } from "@/model/text/type/Word";
+import type { Selection } from "@/stores/source/type/Selection";
+import * as Selection1 from "@/stores/source/type/Selection";
 
 export interface Props {
   words: Word[];
-  selectionStart: Word | null;
-  selectionEnd: Word | null;
+  selection: Selection;
 }
 
 const props = defineProps<Props>();
@@ -12,20 +13,7 @@ const props = defineProps<Props>();
 defineEmits(["selectionStartChange", "selectionEndChange"]);
 
 const resolveBackgroundColor = (word: Word): string => {
-  if (props.selectionStart === null && props.selectionEnd === null) {
-    return "White";
-  }
-
-  if (word.id === props.selectionStart?.id && props.selectionEnd === null) {
-    return "Wheat";
-  }
-
-  if (
-    props.selectionStart !== null &&
-    props.selectionEnd !== null &&
-    word.id >= props.selectionStart.id &&
-    word.id <= props.selectionEnd.id
-  ) {
+  if (Selection1.isWordInSelection(props.selection, word)) {
     return "Wheat";
   }
 

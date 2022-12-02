@@ -90,5 +90,5 @@ export function formatPages(
     endPageFormatted = `-${endPageParts.rest}`;
   }
 
-  return ` (${textShortName}:${startPageFormatted}${endPageFormatted})`;
+  return `(${textShortName}:${startPageFormatted}${endPageFormatted})`;
 }
