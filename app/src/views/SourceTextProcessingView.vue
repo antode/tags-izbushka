@@ -6,30 +6,21 @@ import TextSelection from "@/components/TextSelection.vue";
 import TaggedCitationList from "@/components/CitationList.vue";
 
 import { useSourceStore } from "@/stores/source/SourceStore";
-import { storeToRefs } from "pinia";
-import * as Selection from "@/stores/source/type/Selection";
 
 const sourceStore = useSourceStore();
-const { sources } = storeToRefs(sourceStore);
 
 document.addEventListener("keyup", function (evt) {
   if (evt.ctrlKey && evt.key === "Enter") {
-    sourceStore.addCitation();
-    Selection.clear(sources.value.current.selection);
+    sourceStore.citationAdd();
+    sourceStore.selectionClear();
   }
 });
 
 document.addEventListener("keyup", function (evt) {
   if (evt.key === "Escape") {
-    // sources.value.current.selection.clear();
-    Selection.clear(sources.value.current.selection);
+    sourceStore.selectionClear();
   }
 });
-
-const setStart = (w, z) => {
-  console.log(w, z);
-  Selection.setStart(sources.value.current.selection, w);
-};
 </script>
 
 <template>
@@ -37,16 +28,18 @@ const setStart = (w, z) => {
     <div class="main-panel-row">
       <article aria-label="Текст" class="main-panel-column">
         <TextSelection
-          :words="sourceStore.currentPageWords"
-          :selection="sources.current.selection"
-          @selection-start-change="setStart"
-          @selection-end-change="sources.current.selection.setEnd"
+          :words="sourceStore.sourceWords"
+          :selection="sourceStore.sources.current.selection"
+          :selection-contain-word="sourceStore.selectionContainWord"
+          @selection-start-change="sourceStore.selectionSetStart"
+          @selection-end-change="sourceStore.selectionSetEnd"
         />
       </article>
       <article aria-label="Цитаты" class="main-panel-column">
         <TaggedCitationList
-          :citations-texts="sourceStore.citationsTexts"
-          @citationDelete="sourceStore.deleteCitation"
+          :citations="sourceStore.citationsByTag"
+          :citation-to-string="sourceStore.citationToString"
+          @citationDelete="sourceStore.citationRemove"
         />
       </article>
     </div>
@@ -57,8 +50,8 @@ const setStart = (w, z) => {
         class="bottom-panel-pagination-column"
       >
         <VPagination
-          v-model="sources.current.pageNumber"
-          :pages="sourceStore.pages"
+          v-model="sourceStore.sources.current.pageNumber"
+          :pages="sourceStore.sourcePages"
           :hideFirstButton="true"
           :hideLastButton="true"
         />
@@ -67,7 +60,7 @@ const setStart = (w, z) => {
         <select
           aria-label="Тег"
           class="app-select"
-          v-model="sources.current.tag"
+          v-model="sourceStore.sources.current.tag"
         >
           <option v-for="tag in sourceStore.tags" :key="tag.id" :value="tag">
             {{ tag.value }}
@@ -78,10 +71,10 @@ const setStart = (w, z) => {
         <select
           aria-label="Источник"
           class="app-select"
-          v-model="sources.current"
+          v-model="sourceStore.sources.current"
         >
           <option
-            v-for="source in sources.all"
+            v-for="source in sourceStore.sources.all"
             :key="source.id"
             :value="source"
           >

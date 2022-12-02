@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import type { ICitation } from "@/stores/source/type/Citation";
+
 export interface Props {
-  citationsTexts: string[];
+  citations: ICitation[];
+  citationToString: (citation: ICitation) => string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 defineEmits(["citationDelete"]);
 </script>
 
 <template>
   <div
-    v-for="(citationText, index) in citationsTexts"
+    v-for="citation in citations"
     class="tagged"
-    :key="index"
-    @click.ctrl.alt="$emit('citationDelete', index)"
+    :key="citation.id"
+    @click.ctrl.alt="$emit('citationDelete', citation)"
   >
-    <span>{{ citationText }}</span>
+    <span>{{ props.citationToString(citation) }}</span>
   </div>
 </template>
 

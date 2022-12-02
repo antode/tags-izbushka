@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Word } from "@/model/text/type/Word";
-import type { Selection } from "@/stores/source/type/Selection";
-import * as Selection1 from "@/stores/source/type/Selection";
+import type { ISelection } from "@/stores/source/type/Selection";
 
 export interface Props {
   words: Word[];
-  selection: Selection;
+  selection: ISelection;
+  selectionContainWord: (word: Word) => boolean;
 }
 
 const props = defineProps<Props>();
@@ -13,7 +13,7 @@ const props = defineProps<Props>();
 defineEmits(["selectionStartChange", "selectionEndChange"]);
 
 const resolveBackgroundColor = (word: Word): string => {
-  if (Selection1.isWordInSelection(props.selection, word)) {
+  if (props.selectionContainWord(word)) {
     return "Wheat";
   }
 

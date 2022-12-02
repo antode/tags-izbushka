@@ -1,10 +1,9 @@
 import type { Tag } from "@/model/text/type/Tag";
 import type { Text } from "@/model/text/type/Text";
-import type { Source } from "@/stores/source/Source";
-import type { Selection } from "@/stores/source/type/Selection";
+import type { ISource } from "@/stores/source/Source";
 
 function createDefaultSources(texts: Text[], tag: Tag) {
-  const sources: Source[] = [];
+  const sources: ISource[] = [];
 
   for (const text of texts) {
     sources.push({
@@ -12,16 +11,16 @@ function createDefaultSources(texts: Text[], tag: Tag) {
       name: text.shortName,
       tag,
       pageNumber: 1,
-      selection: {start: null, end: null},
+      selection: { start: null, end: null },
       citations: [],
-      text_id: text.id,
+      textId: text.id,
     });
   }
 
   return sources;
 }
 
-export function getSources(texts: Text[], defaultTag: Tag): Source[] {
+export function getSources(texts: Text[], defaultTag: Tag): ISource[] {
   const sourcesRaw: string | null = localStorage.getItem("sources");
 
   if (sourcesRaw === null) {
@@ -46,7 +45,7 @@ export function getCurrentSourceId(): number {
   return JSON.parse(currentSource);
 }
 
-export function persistSources(sources: Source[]): void {
+export function persistSources(sources: ISource[]): void {
   try {
     localStorage.setItem("sources", JSON.stringify(sources));
   } catch (error) {
