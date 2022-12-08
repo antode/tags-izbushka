@@ -11,7 +11,7 @@
 ## Разработка
 
 ### Требования к ПО
-- Node 18
+- Node 18, npm 9
 - (опционально) Docker, Docker Compose
 
 ### Node.js

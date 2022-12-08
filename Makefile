@@ -38,7 +38,7 @@ run: ## Запуск команды Node
 	${compose} run --rm node ${c}
 
 
-check: ## Проверка типов typescript, стилей и e2e тестирование
+check: up ## Проверка типов typescript, стилей и e2e тестирование
 	${compose} exec node npx playwright install
 
 	${compose} exec node npm run type-check

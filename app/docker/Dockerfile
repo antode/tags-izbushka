@@ -60,8 +60,6 @@ RUN apt-get update; \
 
 RUN mkdir /app && chown -R node:node /app
 
-RUN npm install -g --no-audit npm@latest
-
 RUN userdel --force --remove node
 ARG USER_ID
 RUN groupadd --gid "$USER_ID" dev \
