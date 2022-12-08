@@ -38,7 +38,6 @@ run: ## Запуск команды Node
 
 ## check: Проверка типов typescript, стилей и e2e тестирование
 check: up
-	sleep 15
 	${compose} exec node npx playwright install
 
 	${compose} exec node npm run type-check
