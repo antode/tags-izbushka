@@ -2,4 +2,6 @@
 
 set -Eeuo pipefail;
 
-docker-compose run --rm node "$@";
+COMPOSE="${1}"
+
+${COMPOSE} run --rm node "$@";
