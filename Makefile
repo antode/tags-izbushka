@@ -36,10 +36,14 @@ run: ## Запуск команды Node
      ##     make run c='npm install'
 	${compose} run --rm node ${c}
 
-## check: Проверка типов typescript, стилей и e2e тестирование
-check: up
+install-e2e: up
 	${compose} exec node npx playwright install
+	${compose} ps -a
+	${compose} logs
+	${compose} exec node curl http://localhost:5173
 
+## check: Проверка типов typescript, стилей и e2e тестирование
+check:
 	${compose} exec node npm run type-check
 	${compose} exec node npm run lint:check
 	${compose} exec node npx playwright test
