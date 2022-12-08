@@ -1,0 +1,10 @@
+services:
+  node:
+    build: '../app/docker'
+    volumes: 
+      - '../app:/app'
+      - './cache/node/.npm:/home/node/.npm'
+      - './cache/node/.cache:/home/node/.cache'
+    init: true
+    ports: [ '${NODE_PORT}:5173' ]
+    command: ['npm', 'run', 'dev', '--', '--host', '0.0.0.0']

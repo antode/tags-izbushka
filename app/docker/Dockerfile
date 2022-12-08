@@ -1,4 +1,4 @@
-FROM node
+FROM node:18
 
 RUN apt-get update; \
     apt-get install -y \
@@ -60,7 +60,7 @@ RUN apt-get update; \
 
 RUN mkdir /app && chown -R node:node /app
 
-RUN npm install -g --no-adudit npm@latest
+RUN npm install -g --no-audit npm@latest
 
 WORKDIR /app
 USER node
