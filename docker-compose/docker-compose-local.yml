@@ -3,11 +3,10 @@ services:
     build: 
       context: '../app/docker'
       cache_from:
-        - node:18
-        - ghcr.io/antode/tags-izbushka_node:latest
-      args:
-        - BUILDKIT_INLINE_CACHE=1
-    image: ghcr.io/antode/tags-izbushka_node:latest
+        - type=local,src=docker-compose/cache/.build
+      cache_to: 
+        - type=local,dest=docker-compose/cache/.build
+
     volumes:
       - '../app:/app'
       - './cache/node/.npm:/home/node/.npm'

@@ -33,3 +33,5 @@ playwright-report/
 !/docker-compose/cache/node/.npm/.gitkeep
 /docker-compose/cache/node/.cache/*
 !/docker-compose/cache/node/.cache/.gitkeep
+/docker-compose/cache/.build/*
+!/docker-compose/cache/.build/.gitkeep
