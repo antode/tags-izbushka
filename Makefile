@@ -17,6 +17,7 @@ install: ## Установка проекта: сборка сервисов и 
 	${compose} build
 
 	${compose} run --rm node npm install --no-scripts --no-audit
+	${compose} run --rm node npm run build-only
 
 up: ## Запуск сервисов
     ##     (перед первым запуском следует запустить установку make install)
@@ -36,14 +37,10 @@ run: ## Запуск команды Node
      ##     make run c='npm install'
 	${compose} run --rm node ${c}
 
-install-e2e: up
-	${compose} exec node npx playwright install
-	${compose} ps -a
-	${compose} logs
-	${compose} exec node curl http://localhost:5173
 
-## check: Проверка типов typescript, стилей и e2e тестирование
-check:
+check: ## Проверка типов typescript, стилей и e2e тестирование
+	${compose} exec node npx playwright install
+
 	${compose} exec node npm run type-check
 	${compose} exec node npm run lint:check
 	${compose} exec node npx playwright test
