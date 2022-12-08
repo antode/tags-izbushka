@@ -1,6 +1,9 @@
 services:
   node:
-    build: '../app/docker'
+    build: 
+      context: '../app/docker'
+      cache_from: ghcr.io/antode/tags-izbushka_node:latest
+    image: ghcr.io/antode/tags-izbushka_node:latest
     volumes: 
       - '../app:/app'
       - './cache/node/.npm:/home/node/.npm'
