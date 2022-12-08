@@ -1,4 +1,4 @@
-![CI on main](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=main)
+![CI on main](https://github.com/antode/tags-izbushka/actions/workflows/ci.yml/badge.svg?branch=main)
 
 # Избушка тегов
 
