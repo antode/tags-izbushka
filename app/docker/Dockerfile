@@ -58,15 +58,12 @@ RUN apt-get update; \
         libgles2 \
         gstreamer1.0-libav
 
-RUN mkdir /app && chown -R node:node /app
-
-RUN userdel --force --remove node
 ARG USER_ID
-RUN groupadd --gid "$USER_ID" dev \
-    && useradd --uid "$USER_ID" --gid dev --shell /bin/bash --create-home dev
+RUN userdel --force --remove node; \
+    groupadd --gid "$USER_ID" dev; \
+    useradd --uid "$USER_ID" --gid dev --shell /bin/bash --create-home dev; \
+    mkdir -p /home/dev/.npm /home/dev/.cache /app; \
+    chown -R dev:dev /home/dev/ /app;
 
-WORKDIR /app
 USER dev
-
-RUN mkdir /home/dev/.npm
-RUN mkdir /home/dev/.cache
+WORKDIR /app
