@@ -3,7 +3,7 @@ WORKING_DIR = $(shell pwd)
 BIN_DIR = ${WORKING_DIR}/bin
 DOCKER_COMPOSE_DIR = ${WORKING_DIR}/docker-compose
 
-compose = docker compose
+compose = COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose
 setup_envs = ${BIN_DIR}/setup_envs.bash
 run = ${BIN_DIR}/run.bash
 
@@ -17,7 +17,7 @@ install: ## Установка проекта: сборка сервисов и 
 	
 	${compose} build
 
-	${run} npm install --no-scripts --no-audit
+	# ${run} npm install --no-scripts --no-audit
 
 up: ## Запуск сервисов
     ##     (перед первым запуском следует запустить установку make install)
