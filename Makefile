@@ -37,7 +37,6 @@ run: ## Запуск команды Node
      ##     make run c='npm install'
 	${compose} run --rm node ${c}
 
-
 check: up ## Проверка типов typescript, стилей и e2e тестирование
 	${compose} exec node npx playwright install
 

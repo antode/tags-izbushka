@@ -1,8 +1,5 @@
 name: CI
-on:
-  push:
-    branches:
-      - ci
+on: push
 jobs:
   Install:
     runs-on: ubuntu-latest

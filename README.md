@@ -1,3 +1,5 @@
+![CI on main](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=main)
+
 # Избушка тегов
 
 Приложение позволяет тегировать любые языковые данные и получать их выборку по каждому тегу.
