@@ -12,6 +12,9 @@ help: ## Показать справку
 
 install: ## Установка проекта: сборка сервисов и установка зависимостей
 	${setup_envs} ${WORKING_DIR} ${DOCKER_COMPOSE_DIR}
+	
+	${compose} pull
+	
 	${compose} build
 
 	${run} npm install --no-scripts --no-audit

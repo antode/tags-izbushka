@@ -10,11 +10,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: docker login
+      - name: Docker login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Pull image
-        run: docker compose pull
-
-      - name: Help
+      - name: Install
         run: make install
