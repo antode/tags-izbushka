@@ -1,0 +1,9 @@
+name: CI
+  push:
+    branches:
+      - ci
+jobs:
+  Install:
+    runs-on: ubuntu-latest
+    steps:
+      - run: make help
