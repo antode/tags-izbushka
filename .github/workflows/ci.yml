@@ -31,8 +31,5 @@ jobs:
           key: cache-node
           path: ${{ github.workspace }}/docker-compose/cache/node/
 
-      - name: Install e2e
-        run: make install-e2e
-
       - name: Check
         run: make check
