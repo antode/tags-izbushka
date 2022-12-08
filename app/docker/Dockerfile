@@ -62,8 +62,13 @@ RUN mkdir /app && chown -R node:node /app
 
 RUN npm install -g --no-audit npm@latest
 
-WORKDIR /app
-USER node
+RUN userdel --force --remove node
+ARG USER_ID
+RUN groupadd --gid "$USER_ID" dev \
+    && useradd --uid "$USER_ID" --gid dev --shell /bin/bash --create-home dev
 
-RUN mkdir /home/node/.npm
-RUN mkdir /home/node/.cache
+WORKDIR /app
+USER dev
+
+RUN mkdir /home/dev/.npm
+RUN mkdir /home/dev/.cache

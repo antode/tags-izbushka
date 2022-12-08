@@ -5,7 +5,6 @@ DOCKER_COMPOSE_DIR = ${WORKING_DIR}/docker-compose
 
 compose = docker compose
 setup_envs = ${BIN_DIR}/setup_envs.bash
-# run = ${BIN_DIR}/run.bash
 
 help: ## Показать справку
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
@@ -37,12 +36,10 @@ run: ## Запуск команды Node
      ##     make run c='npm install'
 	${compose} run --rm node ${c}
 
-## install-e2e: Установка пакетов для e2e тестов
-install-e2e: install
-	${run} npx playwright install
-
 ## check: Проверка типов typescript, стилей и e2e тестирование
-check: install-e2e up
+check: up 
+	${compose} exec node npx playwright install
+
 	${compose} exec node npm run type-check
 	${compose} exec node npm run lint:check
 	${compose} exec node npx playwright test
