@@ -1,3 +1,5 @@
+![CI on main](https://github.com/antode/tags-izbushka/actions/workflows/ci.yml/badge.svg?branch=main)
+
 # Избушка тегов
 
 Приложение позволяет тегировать любые языковые данные и получать их выборку по каждому тегу.
@@ -11,7 +13,7 @@
 ## Разработка
 
 ### Требования к ПО
-- Node 18
+- Node 18, npm 9
 - (опционально) Docker, Docker Compose
 
 ### Node.js

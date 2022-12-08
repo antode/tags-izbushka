@@ -7,7 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+/app/node_modules/*
+!/app/node_modules/.gitkeep
+
 .DS_Store
 dist
 dist-ssr
@@ -33,3 +35,5 @@ playwright-report/
 !/docker-compose/cache/node/.npm/.gitkeep
 /docker-compose/cache/node/.cache/*
 !/docker-compose/cache/node/.cache/.gitkeep
+/docker-compose/cache/.build/*
+!/docker-compose/cache/.build/.gitkeep

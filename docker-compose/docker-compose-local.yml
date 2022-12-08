@@ -1,10 +1,17 @@
 services:
   node:
-    build: '../app/docker'
-    volumes: 
+    build: 
+      context: '../app/docker'
+      cache_from:
+        - type=local,src=docker-compose/cache/.build
+      cache_to: 
+        - type=local,dest=docker-compose/cache/.build
+      args:
+        - USER_ID=${USER_ID}
+    volumes:
       - '../app:/app'
-      - './cache/node/.npm:/home/node/.npm'
-      - './cache/node/.cache:/home/node/.cache'
+      - './cache/node/.npm:/home/dev/.npm'
+      - './cache/node/.cache:/home/dev/.cache'
     init: true
     ports: [ '${NODE_PORT}:5173' ]
     command: ['npm', 'run', 'dev', '--', '--host', '0.0.0.0']

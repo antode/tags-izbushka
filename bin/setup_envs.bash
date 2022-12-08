@@ -10,3 +10,5 @@ if [ -f "${WORKING_DIR}/.env" ]; then
 fi
 
 cp "${DOCKER_COMPOSE_DIR}/.env.dist" "${WORKING_DIR}/.env";
+
+echo "USER_ID=$(id -u)" >> "${WORKING_DIR}/.env";
